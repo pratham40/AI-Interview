@@ -10,6 +10,11 @@ interface SignUpParams {
     password: string;
 }
 
+interface currentUser{
+    name: string;
+    email: string;
+    id: string;
+}
 export async function signUp(params:SignUpParams) {
     const { uid, name, email } = params;
 
@@ -83,7 +88,7 @@ export async function signIn(email: string,  idToken: string) {
 }
 
 
-export async function getCurrentUser():Promise<any> {
+export async function getCurrentUser():Promise<currentUser | null> {
     const cookieStore = await cookies();
 
     const sessionCookie = cookieStore.get("session")?.value;
@@ -101,8 +106,10 @@ export async function getCurrentUser():Promise<any> {
             return null;
         }
 
+        const data = userRecord.data();
         return {
-            ...userRecord.data(),
+            name: data?.name ?? "",
+            email: data?.email ?? "",
             id: userRecord.id,
         };
     } catch (error) {

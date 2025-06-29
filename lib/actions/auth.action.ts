@@ -11,7 +11,7 @@ interface SignUpParams {
 }
 
 export async function signUp(params:SignUpParams) {
-    const { uid, name, email, password } = params;
+    const { uid, name, email } = params;
 
     try {
         const userRecord= await db.collection('users').doc(uid).get();

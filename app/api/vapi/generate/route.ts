@@ -16,7 +16,13 @@ export async function GET() {
             status: 200,
         })
     } catch (error) {
-        
+        console.error("Error in GET /api/vapi/generate:", error);
+        return NextResponse.json({
+            success: false,
+            message: "An error occurred while processing your request.",
+        }, {
+            status: 500,
+        });
     }
 }
 

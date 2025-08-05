@@ -29,6 +29,7 @@ export async function GET() {
 
 export async function POST(req:NextRequest) {
     const {type,role,level,techstack,amount,userid} = await req.json();
+    console.log("Received data:", {type, role, level, techstack, amount, userid});
     try {
         const {text} = await generateText({
             model: google("gemini-2.0-flash-001"),
@@ -50,11 +51,13 @@ Example (for 3 questions):
 ❌ No special characters like *, -, :, etc.
 
 Now, generate ${amount} questions accordingly.
-and remoe json markdown
-`
+and remove json markdown
+            `,
 
 
         })
+
+        console.log("Generated text:", text);
 
         const interview = {
             role,
@@ -66,6 +69,8 @@ and remoe json markdown
             finalized:true,
             createdAt:new Date().toISOString()
         }
+
+        console.log("Interview object to be saved:", interview);
 
         await db.collection("interviews").add(interview);
 
